@@ -1,0 +1,36 @@
+{%extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">{{write.title}}</h1>
+        <img src="{{write.url}}" style = "width: 20rem; height: 30rem">
+        <p class="lead text-center">{{write.content}}</p>
+        {%if user == write.user %}
+            <a href="{%url 'todos:update' write.id%}" class='btn btn-warning'>수정</a>
+            <form action="{%url 'todos:delete' write.id%}" method='post' class='d-inline'>
+                {% csrf_token %}
+                <input type="submit" value='삭제' class = 'btn btn-danger'>
+            </form>
+        {%endif%}
+        <hr class="my-4">
+        {%if user.is_authenticated%}
+            <form action="{%url 'todos:comment_create' write.id%}" method='post'>
+                {%csrf_token%}
+                {%bootstrap_form comment_form%}
+                <input type="submit" value='댓글작성' class='btn btn-primary'>
+            </form>
+        {%endif%}
+        {%for comment in write.comment_set.all%}
+            <div class="alert alert-info d-flex justify-content-between my-3" role="alert">
+                {{comment.user}} : {{comment.comment}}
+                <form action="{%url 'todos:comment_delete' write.id comment.id%}" method='post'>
+                    {%csrf_token%}
+                    <small>{{comment.created_at}}</small>
+                    {%if user == comment.user %}
+                    <input type="submit" value='삭제' class='btn btn-dark'>
+                    {%endif%}
+                </form>
+            </div>
+        {%endfor%}
+    </div>
+{% endblock %}

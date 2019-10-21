@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for write in writes %}
+<div class="d-flex align-items-center mb-2">
+  <a href="{% url 'todos:detail' write.id %}"><h3 id='title' class="card-title mr-5">{{write.title}}</h3></a>
+  &nbsp;&nbsp;&nbsp;
+</div>
+{% endfor %}
+{% endblock %}

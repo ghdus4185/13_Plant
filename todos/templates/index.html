@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+{%block body%}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">글제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성날짜</th>
+            <th scope="col">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for form in writes %}
+            <form action="{%url 'todos:delete' form.id%}" method='post'>
+                {%csrf_token%}
+
+                    
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><a href="{%url 'todos:detail' form.id%}">{{form.title}}</a></td>
+                        
+                        <td>{{form.user}}</td>
+                        <td>{{form.created_at}}</td>
+                        {% if user == form.user %}
+                            <td>{{form.cnt}} <input type='submit' class='btn btn-danger' value='삭제'></td>
+                        {% else %}
+                        <td>{{form.cnt}}</td>
+                        {%endif%}
+                    </tr>
+                  
+            </form>
+            {% endfor %}
+          
+        </tbody>
+    </table>
+ 
+{%endblock%}
