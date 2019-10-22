@@ -5,6 +5,11 @@
         <h1 class="display-4 text-center">{{write.title}}</h1>
         <img src="{{write.url}}" style = "width: 20rem; height: 30rem">
         <p class="lead text-center">{{write.content}}</p>
+        {% if user in write.like_users.all %}
+            <a href="{% url 'todos:like' write.id %}">좋아요 취소</a>
+        {% else %}
+            <a href="{% url 'todos:like' write.id %}">좋아요 </a>
+        {% endif %}
         {%if user == write.user %}
             <a href="{%url 'todos:update' write.id%}" class='btn btn-warning'>수정</a>
             <form action="{%url 'todos:delete' write.id%}" method='post' class='d-inline'>
@@ -29,6 +34,11 @@
                     {%if user == comment.user %}
                     <input type="submit" value='삭제' class='btn btn-dark'>
                     {%endif%}
+                    {% if user in comment.comment_like_users.all %}
+                        <a href="{% url 'todos:comment_like' write.id comment.id %}">댓글좋아요취소</a>
+                    {% else %}
+                        <a href="{% url 'todos:comment_like' write.id comment.id %}">댓글좋아요</a>
+                    {% endif %}
                 </form>
             </div>
         {%endfor%}
